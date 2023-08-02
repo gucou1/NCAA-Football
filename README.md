@@ -1,6 +1,6 @@
 # NCAA Football - Match Preparation !
 
-> In this project, I dive into the world of College Footbal, one of my favorite sports and league! This time, I'll analyze a bit of the big picture of the NCAA - as per the dataset - and then I'll prepare an analysis focused on a single team. The idea is imagining I'm working with a team and preparing to analyze our next opponent in order to put our team in the best position possible to win. Stick around to find out more! LET'S GO !!!!
+In this project, I dive into the world of College Footbal, one of my favorite sports and league! This time, I'll analyze a bit of the big picture of the NCAA - as per the dataset - and then I'll prepare an analysis focused on a single team. The idea is imagining I'm working with a team and preparing to analyze our next opponent in order to put our team in the best position possible to win. Stick around to find out more! LET'S GO !!!!
 
 
  <br>
@@ -2818,11 +2818,44 @@ In 2019, LSU scored a total of 93 Offensive Touchdowns, leading them to a 15-0 r
 
 ``` SQL
 
+SELECT
+  Team,
+  Division,
+  Season,
+  Off_TDs_Allowed,
+  Win,
+  Loss
+
+FROM
+  ncaa_fbs_stats.defense
+
+ORDER BY
+  Off_TDs_Allowed
+  
+LIMIT 10;
+
 ```
 </p>
 </details>
 
 > Query 1 results:
+
+
+|Team	|Division	|Season	|Off_TDs_Allowed	|Win	|Loss
+|-----|---------|-------|----------------|----|----|
+|Ohio	|MAC|	2020	|6	|2	|1
+|Rice	|C-USA	|2020	|10	|2	|3
+|Wisconsin	|Big Ten	|2020	|10	|3	|3
+|Northwestern	|Big Ten	|2020	|11	|6	|2
+|Air Force	|Mountain West	|2020	|11	|3	|3
+|Miami (OH)	|MAC	|2020	|11	|2	|1
+|Colorado St.	|Mountain West	|2020	|13	|1	|3
+|Georgia	|SEC	|2021	|13	|14	|1
+|Arizona St.	|Pac-12	|2020	|13	|2	|2
+|Washington	|Pac-12	|2020	|13	|3	|1
+
+In 2020, due to COVID-19, the Mid-American Conference released a calendar of only 6 games. Ohio only allowed 6 Offensive Touchdowns, but they only played 3 games having seen the other 3 canceled due to positive COVID-19 tests.
+The first row returned that falls outside the 2020 season, shows that Georgia allowed 13 Offensive Touchdowns during the 2021 season. They managed a record of 14-1 and won the College Football National Championship over Alabama.
 
 
 <br>
