@@ -119,7 +119,9 @@ We can find 10 .csv files, one for each season, starting on the 2013 season and 
    - Some issues with data input. Some teams or divisions are spelled differently and needed to be consistent.
    - “Team” field showed the college name and division between brackets (Ex: Penn St. (Big Ten). So, I decided to split these into 2 columns (Team and Division). This allows for a clearer view of whether or not the team changed division throughout the years.
    - In some seasons, we may find teams without a division associated with it, or wrong division (“Ole Miss()” or “Pittsburgh ()” and “New Mexico St. (FBS Independent)” or “New Mexico St. (Independent)” ). Here, I will complete this information with the corresponding division for that season.
-<details><summary>SQL Code: </summary>
+
+
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
@@ -541,15 +543,20 @@ FROM subtle-striker-370721.ncaa_fbs_stats.cfb22
 ```
 </p>
 </details>
-     
+
+
+<br>
+<br>
+
 2. **offense**: table containing offensive statistics for each team and through every season (13-22)
    - Same issues as above, corrected for consistency.
    - Not pulling the calculated columns (Ex: off_yards_play) because I may want to do these calculations later.
    - X4th_Down_Attempts and X4th_Down_Conversions entries are switched. For example it would say a team had 8 attempts and converted 22, which is incorrect. Needs to be changed.
    - Casting Time_of_Possession as TIME to better help analysis.
    - For the  2021 and 2022 season’s tables, there was a Win/Loss column instead of a Win Column and a Loss Column. Had to split these to align with the other tables.
-    
-<details><summary>SQL Code: </summary>
+
+
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
   
 ``` SQL
@@ -1277,10 +1284,15 @@ FROM subtle-striker-370721.ncaa_fbs_stats.cfb22
 </p>
 </details>
 
+
+<br>
+<br>
+
 3. **defense**: table containing defensive statistics for each team and through every season (13-22)
    - Same issues as above, corrected for consistency
-  
-<details><summary>SQL Code: </summary>
+
+
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
   
 ``` SQL
@@ -2044,12 +2056,17 @@ FROM subtle-striker-370721.ncaa_fbs_stats.cfb22
 </p>
 </details>
 
+
+<br>
+<br>
+
 4. **special_teams**: table containing special teams statistics for each team and through every season (13-22)
    - Same issues as the previous tables, corrected for consistency.
    - Column Avg_Yard_per_Kickoff_Return is wrong. This column tracks the total kickoff returns for touchdown. Kickoff_Return_Touchdowns values are showing the total yardage for kickoff returns. Kickoff_Return_Yards is measuring the total kickoff touchbacks, will be deleted as we already have a column for that measure (Kickoff_Touchbacks). This behaviour is showing from the 2016 season to the 2021. Will be corrected.
    - Renaming some columns for clearer understanding
 
-<details><summary>SQL Code: </summary>
+
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
@@ -2705,12 +2722,12 @@ SELECT -- 2022 Season
       Team LIKE "%(MWC)%"
         THEN "Mountain West"
     WHEN 
+      THEN "SEC"
       Team LIKE "Miami%"
         THEN
           SUBSTR(Team, STRPOS(Team,') (') + 3,LENGTH(Team) - (STRPOS(Team, ') (') + 3))
     WHEN 
       Team LIKE "Ole Miss%" AND LENGTH(SUBSTR(Team,STRPOS(Team,'(') + 1,LENGTH(Team) - (STRPOS(Team,'(')+1))) = 0
-      THEN "SEC"
       ELSE 
         SUBSTR(Team,STRPOS(Team,'(') + 1,LENGTH(Team) - (STRPOS(Team,'(')+1)) 
   END AS Division,
@@ -2750,24 +2767,53 @@ FROM
   
 > Tables were merged, previously detected issues are cleaned and ready for analysis!
 
+ <br>
+ <br>
  
 ## Exploratory Analysis
 ### 1. Which **Offense** scored the most Touchdowns and what season was it?
-<details><summary>SQL Code: </summary>
+
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
+
+SELECT  
+  Team,
+  Division,
+  Season,
+  Off_TDs,
+  Win,
+  Loss
+
+FROM 
+  ncaa_fbs_stats.offense
+
+ORDER BY
+  Off_TDs DESC
+  
+LIMIT 1;
 
 ```
 </p>
 </details>
 
-> Query 1 results:
+> Query results:
 
 
+|Team |Division |Season	|Off_TDs	|Win	|Loss |
+|-----|---------|-------|--------|----|-----|
+|LSU	|SEC	|2019	|93	|15	|0
+
+In 2019, LSU scored a total of 93 Offensive Touchdowns, leading them to a 15-0 record. They won the College Football National Championship game, against Clemson, who had won the previous year and were expecting to revalidate their title.
+
+
+<br>
+<br>
 
 ### 2. Which **Defense** allowed the least Touchdowns and in what season?
-> <details><summary>SQL Code: </summary>
+
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
@@ -2778,9 +2824,12 @@ FROM
 
 > Query 1 results:
 
+
+<br>
+<br>
 
 ### 3. In a season, which team had the most **Passing** Touchdowns? And **Rushing**?
-<details><summary>SQL Code: </summary>
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
@@ -2792,9 +2841,11 @@ FROM
 > Query 1 results:
 
 
+<br>
+<br>
 
 ### 4. Which Team has scored the most **Field Goals**, between the 2013 and 2022 Seasons?
-<details><summary>SQL Code: </summary>
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
@@ -2806,9 +2857,11 @@ FROM
 > Query 1 results:
 
 
+<br>
+<br>
 
 ### 5. What’s the **average punt return yardage allowed** per game - by division - for the first 5 seasons (2013-2017) and how does it compare against the last 5 seasons (2018-2022?
-<details><summary>SQL Code: </summary>
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
@@ -2820,9 +2873,11 @@ FROM
 > Query 1 results:
 
 
+<br>
+<br>
 
 ### 6. What’s the average difference between scored and allowed TD’s ? Does a bigger difference result in more wins?
-<details><summary>SQL Code: </summary>
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
@@ -2834,9 +2889,11 @@ FROM
 > Query 1 results:
 
 
+<br>
+<br>
 
 ### 7. Which team had the highest a**verage of time of possession** in each season?
-<details><summary>SQL Code: </summary>
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
@@ -2848,9 +2905,11 @@ FROM
 > Query 1 results:
 
 
+<br>
+<br>
 
 ### 8. Which Defense lead the league in **Interceptions** and **Fumbles recovered** in each season?
-<details><summary>SQL Code: </summary>
+**<details><summary><ins>SQL Code:</ins> </summary>**
 <p>
 
 ``` SQL
