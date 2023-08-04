@@ -2867,11 +2867,35 @@ The first row returned that falls outside the 2020 season, shows that Georgia al
 
 ``` SQL
 
+SELECT
+  Team,
+  Division,
+  Season,
+  Pass_TD,
+  Rushing_TD
+
+FROM 
+  ncaa_fbs_stats.offense
+
+WHERE
+  Pass_TD = (SELECT 
+                MAX(Pass_TD)
+             FROM
+              ncaa_fbs_stats.offense)
+            OR
+  Rushing_TD = (SELECT
+                  MAX(Rushing_TD)
+                FROM
+                  ncaa_fbs_stats.offense);
+
+
 ```
 </p>
 </details>
 
 > Query 1 results:
+
+
 
 
 <br>
